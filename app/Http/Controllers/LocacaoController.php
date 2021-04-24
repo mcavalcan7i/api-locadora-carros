@@ -12,18 +12,7 @@ class LocacaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function index() {
         //
     }
 
@@ -33,8 +22,7 @@ class LocacaoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -44,19 +32,7 @@ class LocacaoController extends Controller
      * @param  \App\Models\Locacao  $locacao
      * @return \Illuminate\Http\Response
      */
-    public function show(Locacao $locacao)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Locacao  $locacao
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Locacao $locacao)
-    {
+    public function show(Locacao $locacao) {
         //
     }
 
@@ -67,8 +43,7 @@ class LocacaoController extends Controller
      * @param  \App\Models\Locacao  $locacao
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Locacao $locacao)
-    {
+    public function update(Request $request, Locacao $locacao) {
         //
     }
 
@@ -78,8 +53,7 @@ class LocacaoController extends Controller
      * @param  \App\Models\Locacao  $locacao
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Locacao $locacao)
-    {
+    public function destroy(Locacao $locacao) {
         //
     }
 }

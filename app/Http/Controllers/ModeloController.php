@@ -12,18 +12,7 @@ class ModeloController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
+    public function index() {
         //
     }
 
@@ -33,8 +22,7 @@ class ModeloController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         //
     }
 
@@ -44,19 +32,7 @@ class ModeloController extends Controller
      * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function show(Modelo $modelo)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Modelo  $modelo
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Modelo $modelo)
-    {
+    public function show(Modelo $modelo) {
         //
     }
 
@@ -67,8 +43,7 @@ class ModeloController extends Controller
      * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Modelo $modelo)
-    {
+    public function update(Request $request, Modelo $modelo) {
         //
     }
 
@@ -78,8 +53,7 @@ class ModeloController extends Controller
      * @param  \App\Models\Modelo  $modelo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Modelo $modelo)
-    {
+    public function destroy(Modelo $modelo) {
         //
     }
 }
