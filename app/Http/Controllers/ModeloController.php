@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Modelo;
+use App\Repositories\ModeloRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,8 +20,29 @@ class ModeloController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        return response()->json($this->modelo->all(), 200);
+    public function index(Request $request) {
+        $modeloRepository = new ModeloRepository($this->modelo);
+
+        if ($request->has('atributos_marca')) {
+            $atributosMarca = $request->atributos_marca;
+            $attributosMarca = "marca:id,{$atributosMarca}";
+
+            $modeloRepository->selectAtributosRegistrosRelacionados($attributosMarca);
+        } else {
+            $modeloRepository->selectAtributosRegistrosRelacionados("marca");
+        }
+
+        if ($request->has('filtro')) {
+            $modeloRepository->filtro($request->filtro);
+        }
+
+        if ($request->has('atributos')) {
+            $modeloRepository->selectAtributos($request->atributos);
+
+        }
+        
+        return response()->json($modeloRepository->getResultado(), 200);
+
     }
 
     /**
@@ -42,7 +64,7 @@ class ModeloController extends Controller {
             'imagem' => $imagem_urn,
             'numero_portas' => $request->numero_portas,
             'lugares' => $request->lugares,
-            'airbag' => $request->airbag,
+            'air_bag' => $request->air_bag,
             'abs' => $request->abs
         ]);
 
@@ -56,9 +78,9 @@ class ModeloController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(int $id) {
-        $modelo = $this->modelo->find($id);
+        $modelo = $this->modelo->with('marca')->find($id);
 
-        if ($modelo != null) {
+        if ($modelo == null) {
             return response()->json(['msg' => 'Modelo informado não existe'], 404);
         }
 
@@ -104,15 +126,9 @@ class ModeloController extends Controller {
         $imagem = $request->file('imagem');
         $imagem_urn = $imagem->store('imagens/modelos', 'public');
 
-        $modelo->update([
-            'marca_id' => $request->marca_id,
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn,
-            'numero_portas' => $request->numero_portas,
-            'lugares' => $request->lugares,
-            'airbag' => $request->airbag,
-            'abs' => $request->abs
-        ]);
+        $modelo->fill($request->all());
+        $modelo->imagem = $imagem_urn;
+        $modelo->save();
 
         return response()->json($modelo, 200);
     }
@@ -133,7 +149,7 @@ class ModeloController extends Controller {
         Storage::disk('public')->delete($modelo->imagem);
 
         $modelo->delete();
-        
+
         return response()->json(['msg' => "Modelo excluido com sucesso"], 200);
 
     }

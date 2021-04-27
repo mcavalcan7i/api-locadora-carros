@@ -24,4 +24,12 @@ class Marca extends Model
             'nome.unique' => "O nome da marca já existe!"
         ];
     }
+
+    public function modelos () {
+        // Uma marca possui muitos modelos
+
+        // Possui muitos
+        return $this->hasMany('App\Models\Modelo');
+
+    }
 }

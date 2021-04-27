@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Marca;
+use App\Repositories\MarcaRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -19,9 +20,29 @@ class MarcaController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {
-        $marcas = $this->marca->all();
-        return response()->json($marcas, 200);
+    public function index(Request $request) {
+
+        $marcaRepository = new MarcaRepository($this->marca);
+
+        if ($request->has('atributos_modelos')) {
+            $atributosModelo = $request->atributos_modelos;
+            $atributosModelo = "modelos:id,{$atributosModelo}";
+
+            $marcaRepository->selectAtributosRegistrosRelacionados($atributosModelo);
+        } else {
+            $marcaRepository->selectAtributosRegistrosRelacionados("modelos");
+        }
+
+        if ($request->has('filtro')) {
+            $marcaRepository->filtro($request->filtro);
+        }
+
+        if ($request->has('atributos')) {
+            $marcaRepository->selectAtributos($request->atributos);
+
+        }
+        
+        return response()->json($marcaRepository->getResultado(), 200);
     }
 
     /**
@@ -51,7 +72,7 @@ class MarcaController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show(int $id) {
-        $marca = $this->marca->find($id);
+        $marca = $this->marca->with('modelos')->find($id);
         
         if ($marca === null) {
             return response()->json(['msg' => 'Recurso solicitado não existe'], 404);
@@ -103,10 +124,9 @@ class MarcaController extends Controller {
         $imagem = $request->file('imagem');
         $imagem_urn = $imagem->store('imagens', 'public');
         
-        $marca->update([
-            'nome' => $request->nome,
-            'imagem' => $imagem_urn
-        ]);
+        $marca->fill($request->all());
+        $marca->imagem = $imagem_urn;
+        $marca->save();
 
         return response()->json($marca, 200);
     }
